@@ -22,5 +22,5 @@ app.get('/ca', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`)
-    wakeUpDynp(URL, 10);
+    wakeUpDynp(URL, 25);
 })

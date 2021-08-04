@@ -12,7 +12,7 @@ async function extractNews(url) {
         ],
     });
     const page = await browser.newPage();
-    await page.goto(url);
+    await page.goto(url, { waitUntil: 'load', timeout: 0 });
 
 
     const data = await page.evaluate(() => {
@@ -47,21 +47,21 @@ async function extractNews(url) {
                     title: dataRow1[0],
                     treatment: dataRow1[1],
                     beingTreated: dataRow1[2],
-                    die: dataRow1[3],
+                    die: dataRow1[4],
+                    cured: dataRow1[3],
                 },
                 world: {
                     title: dataRow2[0],
                     treatment: dataRow2[1],
                     beingTreated: dataRow2[2],
-                    die: dataRow2[3],
+                    die: dataRow2[4],
+                    cured: dataRow1[3],
                 },
             }
         };
     });
 
     await browser.close();
-
-
 
     return {
         data,
