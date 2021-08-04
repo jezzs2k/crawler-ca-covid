@@ -7,7 +7,7 @@ async function extractNews(url) {
     const browser = await puppeteer.launch({
         headless: true,
         waitUntil: 'networkidle2',
-        // executablePath: '/usr/bin/google-chrome',
+        executablePath: '/usr/bin/google-chrome',
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
