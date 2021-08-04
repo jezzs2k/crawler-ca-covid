@@ -1,12 +1,12 @@
 const fs = require('fs');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const crawler = require('./crawler');
 const wakeUpDynp = require('./wakeUpDyno');
 
-const URL = 'https://crawler-news-ncov.herokuapp.com/';
+const URL = 'https://crawler-ca-number.herokuapp.com/';
 
 (async () => await crawler())();
 

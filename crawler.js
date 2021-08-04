@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const fetch = require("node-fetch");
+const moment = require('moment-timezone');
 
 async function extractNews(url) {
     const browser = await puppeteer.launch({
@@ -80,6 +82,30 @@ async function extractNews(url) {
 
 const handleCrawlerNews = async () => {
     const data = await extractNews('https://ncov.moh.gov.vn/');
+
+    const now = moment(new Date());
+    const nowViTz = now.tz('Asia/Ho_Chi_Minh');
+
+    const hour = nowViTz.hour();
+    const minute = nowViTz.minute();
+
+    if (hour === 6 || hour === 10 || hour === 12 || hour === 13 || hour === 16 || hour === 19 || hour === 22 || (hour === 23 && minute === 30)) {
+        const caInput = {
+            "totalCa": JSON.stringify(JSON.stringify(data.data.totalCa)),
+            "tableData": JSON.stringify(JSON.stringify(data.data.tableData)),
+        }
+
+        const body = {
+            "query": `mutation{createCa(caInput: {totalCa: ${caInput.totalCa}, tableData: ${caInput.tableData}} ){message} }`
+        };
+
+        fetch('https://crawl-new-api.herokuapp.com/', {
+            method: 'post',
+            body: JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json' },
+        }).then(res => res.json())
+            .then(json => console.log(json));
+    }
 
     fs.writeFile('infos.json', JSON.stringify(data), 'utf8', (err) => {
         if (err) {
