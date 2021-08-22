@@ -7,10 +7,12 @@ async function extractNews(url) {
     const browser = await puppeteer.launch({
         headless: true,
         waitUntil: 'networkidle2',
-        // executablePath: '/usr/bin/google-chrome',
+        executablePath: 'google-chrome-stable',
         args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--disable-setuid-sandbox",
+            "--no-sandbox",
         ],
     });
     const page = await browser.newPage();
@@ -99,7 +101,7 @@ const handleCrawlerNews = async () => {
             "query": `mutation{createCa(caInput: {totalCa: ${caInput.totalCa}, tableData: ${caInput.tableData}} ){message} }`
         };
 
-        fetch('https://crawl-new-api.herokuapp.com/', {
+        fetch('http://crawler-news-covid:5000/', {
             method: 'post',
             body: JSON.stringify(body),
             headers: { 'Content-Type': 'application/json' },
